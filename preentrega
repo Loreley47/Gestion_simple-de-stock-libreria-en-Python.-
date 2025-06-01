@@ -1,0 +1,162 @@
+# TP.Prentrega
+db_list = []
+db_list.append(["1984", "Ciencia Ficción", 18000])
+db_list.append(["El Principito", "Fábula", 12000])
+db_list.append(["Don Quijote de la Mancha", "Clásico", 35000])
+db_list.append(["Crimen y castigo", "Novela", 22000])
+db_list.append(["Orgullo y prejuicio", "Romance", 19500])
+db_list.append(["La Odisea", "Épica", 16000])
+db_list.append(["El Alquimista", "Autoayuda", 17000])
+
+menu_opciones = {
+    "1": "Mostrar todos los libros",
+    "2": "Buscar libro por titulo",
+    "3": "Agregar libro",
+    "4": "Eliminar libro",
+    "0": "Salir del programa",
+}
+
+
+def mostrar_menu_opciones():
+    print("\n ____Menú de opciones____:")
+    for clave, valor in menu_opciones.items():
+        print(f"{clave}.{valor}")
+    print("________________________")
+
+
+def obtener_eleccion_usuario():
+    while True:
+        try:
+            eleccion = input("Elige una opción: ").strip()
+            if eleccion in menu_opciones.keys():
+                return eleccion
+            else:
+                print("Opción inválida. Intenta nuevamente.")
+        except ValueError:
+            print("Entrada inválida. Intenta nuevamente.")
+
+
+def mostrar_libros():
+    print("\n--- LISTA DE LIBROS EN STOCK---")
+    if not db_list:
+        print("No hay libros en la librería para mostrar.")
+        return
+    print("N° | Título                     | Categoría            | Precio")
+    print("------------------------------------------------------------------")
+    for i, libro in enumerate(db_list):
+        print("Listado stock de libros")
+        print(f"{i + 1} | {libro[0]} | {libro[1]} | ${libro[2]}")
+        print("------------------------------------------------------------------")
+
+def buscar_libro():
+    print("\n--- Buscar libro por titulo ---")
+    if not db_list: 
+        print("No hay libros en la librería para buscar.")
+        return
+    titulo_a_buscar = input("Ingrese el titulo del libro a buscar: ").strip().lower()
+
+    if not titulo_a_buscar:
+        print("No se ingresó ningún titulo para buscar. Intente nuevamente.")
+        return
+    resultados = []
+    for i, libro in enumerate(db_list): 
+        if titulo_a_buscar in libro[0].lower():
+            resultados.append([i + 1, libro]) 
+    
+    if not resultados:
+        print(f"No se encontraron libros con el nombre '{titulo_a_buscar}'.")
+    else:
+        print(f"\n--- RESULTADOS DE BÚSQUEDA para '{titulo_a_buscar}' ---")
+        print("N° | Título                      | Categoría             | Precio")
+        print("------------------------------------------------------------------")
+        for resultado in resultados: 
+            
+            print(f"{resultado[0]} | {resultado[1][0]:<27} | {resultado[1][1]:<21} | ${resultado[1][2]:<6}")
+        print("------------------------------------------------------------------")
+
+
+def agregar_libro():
+    print("\n--- Agregar nuevo libro ---")
+    while True:
+        nombre = input("Ingrese el nombre del libro: ").strip().title()
+        if nombre:
+            break
+        else:
+            print("Error: El nombre no puede estar vacío. Intente de nuevo.")
+
+    while True:
+        categoria = input("Ingrese la categoría del libro: ").strip().title()
+        if categoria:
+            break
+        else:
+            print("Error: La categoría no puede estar vacía. Intente de nuevo.")
+    while True:
+        precio_str = input("Ingrese el precio del libro (sin centavos): ")
+        if precio_str.isdigit():
+            precio = int(precio_str)
+            if precio >= 0:
+                break
+            else:
+                print("Error: El precio no puede ser negativo. Intente de nuevo.")
+        else:
+            print(
+                "Error: El precio debe ser un número entero válido (sin centavos). Intente de nuevo."
+            )
+
+    nuevo_libro = [nombre, categoria, precio]
+    db_list.append(nuevo_libro)
+    print(f"libro {nombre} agregado exitosamente")
+
+
+
+
+            
+
+
+def eliminar_libro():
+    print("\n--- ELIMINAR LIBRO ---")
+    if not db_list:
+        print("No hay libros en la librería para eliminar.")
+        return
+    mostrar_libros()
+    while True:
+        posicion_str = input(
+            "Ingrese el NÚMERO de la posición del libro a eliminar (0 para cancelar): "
+        ).strip()
+
+        posicion = int(posicion_str)
+
+        if posicion == 0:
+            print("Operación de eliminación cancelada.")
+            return
+        if 1 <= posicion <= len(db_list):
+            libro_eliminado = db_list.pop(posicion - 1)
+            print(
+                f"Libro '{libro_eliminado[0]}' (posición {posicion}) eliminado exitosamente."
+            )
+            return
+        else:
+            print(
+                f"Error: Número de posición inválido. Intente de nuevo con un número entre 1 y {len(db_list)}."
+            )
+
+
+def main():
+    while True:
+        mostrar_menu_opciones()
+        opcion_elegida = obtener_eleccion_usuario()
+        if opcion_elegida == "1":
+            mostrar_libros()
+        elif opcion_elegida == "2":
+            buscar_libro()
+        elif opcion_elegida == "3":
+            agregar_libro()
+        elif opcion_elegida == "4":
+            eliminar_libro()
+        elif opcion_elegida == "0":
+            print(menu_opciones["0"])
+            break
+
+
+if __name__ == "__main__":
+    main()
