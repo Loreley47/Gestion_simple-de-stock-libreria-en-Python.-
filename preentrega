@@ -108,11 +108,6 @@ def agregar_libro():
     print(f"libro {nombre} agregado exitosamente")
 
 
-
-
-            
-
-
 def eliminar_libro():
     print("\n--- ELIMINAR LIBRO ---")
     if not db_list:
