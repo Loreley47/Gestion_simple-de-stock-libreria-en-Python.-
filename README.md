@@ -1,0 +1,1 @@
+# Gesti-n-de-stock-libreria-en-Python.-
